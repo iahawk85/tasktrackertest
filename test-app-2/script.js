@@ -49,6 +49,9 @@ const listEl = document.getElementById('task-list');
 const countEl = document.getElementById('task-count');
 const emptyStateEl = document.getElementById('empty-state');
 const validationMsgEl = document.getElementById('validation-msg');
+const charCountEl = document.getElementById('char-count');
+const progressTrackEl = document.getElementById('progress-track');
+const progressFillEl = document.getElementById('progress-fill');
 
 // === State ===
 
@@ -83,6 +86,7 @@ function render() {
 
     const delBtn = document.createElement('button');
     delBtn.className = 'delete-btn';
+    delBtn.type = 'button';
     delBtn.textContent = '✕';
     delBtn.setAttribute('aria-label', `Delete "${task.text}"`);
 
@@ -100,6 +104,12 @@ function updateCount() {
   const total = tasks.length;
   const done = tasks.filter((t) => t.completed).length;
   countEl.textContent = `${done} of ${total} tasks completed`;
+
+  // Update progress bar
+  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+  progressFillEl.style.width = `${pct}%`;
+  progressTrackEl.setAttribute('aria-valuenow', pct);
+  progressTrackEl.classList.toggle('progress-track--empty', total === 0);
 }
 
 function updateEmptyState() {
@@ -146,6 +156,9 @@ function addTask(text) {
   saveTasks(tasks);
   render();
   inputEl.value = '';
+  // Reset char counter
+  charCountEl.textContent = 200;
+  charCountEl.classList.remove('char-count--warn', 'char-count--danger');
   inputEl.focus();
   return true;
 }
@@ -185,9 +198,17 @@ listEl.addEventListener('click', (e) => {
   }
 });
 
-// Clear validation on input
+// Clear validation + update char count on input
 inputEl.addEventListener('input', () => {
   clearValidation();
+  const remaining = 200 - inputEl.value.length;
+  charCountEl.textContent = remaining;
+  charCountEl.classList.remove('char-count--warn', 'char-count--danger');
+  if (remaining <= 10) {
+    charCountEl.classList.add('char-count--danger');
+  } else if (remaining <= 30) {
+    charCountEl.classList.add('char-count--warn');
+  }
 });
 
 // === Init ===
