@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📋 Task Tracker</h1>
+      <p class="subtitle">Keep track of what matters</p>
+    </header>
+
+    <section class="add-task">
+      <form id="task-form" novalidate>
+        <div class="input-group">
+          <input
+            type="text"
+            id="task-input"
+            placeholder="What do you need to do?"
+            maxlength="200"
+            autocomplete="off"
+          >
+          <button type="submit" id="add-btn">Add</button>
+        </div>
+        <p id="validation-msg" class="validation-msg" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="stats">
+      <p id="task-count" class="task-count">0 of 0 tasks completed</p>
+    </section>
+
+    <section class="task-list">
+      <ul id="task-list" class="task-list__items"></ul>
+    </section>
+
+    <section class="empty-state" id="empty-state">
+      <div class="empty-state__content">
+        <span class="empty-state__icon">📝</span>
+        <p class="empty-state__text">No tasks yet. Add one above!</p>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
